@@ -1,0 +1,56 @@
+{
+  "fullTranscript": "This is the full transcript of the video. It contains several sentences and sections. AI processing helps to identify key moments and suggest highlights. This is sentence three. And finally, sentence four.",
+  "sections": [
+    {
+      "title": "Introduction",
+      "sentences": [
+        {
+          "id": "sent1",
+          "text": "This is the full transcript of the video.",
+          "startTime": 0.0,
+          "endTime": 2.5,
+          "isSuggestedHighlight": true
+        },
+        {
+          "id": "sent2",
+          "text": "It contains several sentences and sections.",
+          "startTime": 2.6,
+          "endTime": 5.0,
+          "isSuggestedHighlight": false
+        }
+      ]
+    },
+    {
+      "title": "AI Processing Overview",
+      "sentences": [
+        {
+          "id": "sent3",
+          "text": "AI processing helps to identify key moments and suggest highlights.",
+          "startTime": 5.5,
+          "endTime": 9.0,
+          "isSuggestedHighlight": true
+        },
+        {
+          "id": "sent4",
+          "text": "This is sentence three.",
+          "startTime": 9.1,
+          "endTime": 10.5,
+          "isSuggestedHighlight": false
+        }
+      ]
+    },
+    {
+      "title": "Conclusion",
+      "sentences": [
+        {
+          "id": "sent5",
+          "text": "And finally, sentence four.",
+          "startTime": 11.0,
+          "endTime": 12.5,
+          "isSuggestedHighlight": false
+        }
+      ]
+    }
+  ],
+  "suggestedHighlights": ["sent1", "sent3"]
+} 
