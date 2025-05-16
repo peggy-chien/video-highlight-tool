@@ -13,14 +13,14 @@ const EditingArea: React.FC = () => {
       try {
         const data = await processVideo(file);
         setProcessingData(data);
-        // Auto-select suggested highlights
-        if (data.suggestedHighlights && data.suggestedHighlights.length > 0) {
-          data.suggestedHighlights.forEach((id) => {
-            if (!selectedSentences.has(id)) {
-              toggleSentenceSelection(id);
+        // Auto-select all sentences where `isSuggestedHighlight` is `true`
+        data.sections.forEach(section => {
+          section.sentences.forEach(sentence => {
+            if (sentence.isSuggestedHighlight && !selectedSentences.has(sentence.id)) {
+              toggleSentenceSelection(sentence.id);
             }
           });
-        }
+        });
       } catch (error) {
         console.error('Error processing video:', error);
       }

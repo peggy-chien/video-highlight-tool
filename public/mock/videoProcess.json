@@ -6,14 +6,14 @@
       "sentences": [
         {
           "id": "sent1",
-          "text": "This is the full transcript of the video.",
+          "text": "Welcome to our product demonstration.",
           "startTime": 0.0,
           "endTime": 2.5,
           "isSuggestedHighlight": true
         },
         {
           "id": "sent2",
-          "text": "It contains several sentences and sections.",
+          "text": "We're excited to show you the features of our product.",
           "startTime": 2.6,
           "endTime": 5.0,
           "isSuggestedHighlight": false
@@ -21,21 +21,47 @@
       ]
     },
     {
-      "title": "AI Processing Overview",
+      "title": "Key Features",
       "sentences": [
         {
           "id": "sent3",
-          "text": "AI processing helps to identify key moments and suggest highlights.",
+          "text": "Our product is designed to help you manage your time effectively.",
           "startTime": 5.5,
           "endTime": 9.0,
-          "isSuggestedHighlight": true
+          "isSuggestedHighlight": false
         },
         {
           "id": "sent4",
-          "text": "This is sentence three.",
+          "text": "It allows you to set goals and track your progress.",
           "startTime": 9.1,
           "endTime": 10.5,
+          "isSuggestedHighlight": true
+        },
+        {
+          "id": "sent5",
+          "text": "It provides detailed analytics to help you improve.",
+          "startTime": 10.6,
+          "endTime": 12.0,
+          "isSuggestedHighlight": true
+        }
+      ]
+    },
+    {
+      "title": "Demonstration",
+      "sentences": [
+        {
+          "id": "sent6",
+          "text": "We'll now demonstrate the product in action.",
+          "startTime": 12.1,
+          "endTime": 14.0,
           "isSuggestedHighlight": false
+        },
+        {
+          "id": "sent7",
+          "text": "You can see the progress bar filling up as we add tasks.",
+          "startTime": 14.1,
+          "endTime": 15.5,
+          "isSuggestedHighlight": true
         }
       ]
     },
@@ -43,14 +69,20 @@
       "title": "Conclusion",
       "sentences": [
         {
-          "id": "sent5",
-          "text": "And finally, sentence four.",
-          "startTime": 11.0,
-          "endTime": 12.5,
+          "id": "sent8",
+          "text": "Thank you for watching!",
+          "startTime": 15.6,
+          "endTime": 16.0,
+          "isSuggestedHighlight": true
+        },
+        {
+          "id": "sent9",
+          "text": "We hope you enjoyed the demonstration.",
+          "startTime": 16.1,
+          "endTime": 17.5,
           "isSuggestedHighlight": false
         }
       ]
     }
-  ],
-  "suggestedHighlights": ["sent1", "sent3"]
+  ]
 } 
