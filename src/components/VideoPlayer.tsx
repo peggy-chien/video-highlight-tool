@@ -20,6 +20,13 @@ const VideoPlayer: React.FC = () => {
     }
   };
 
+  // Sync video element's currentTime with the store's currentTime
+  useEffect(() => {
+    if (videoRef.current && Math.abs(videoRef.current.currentTime - currentTime) > 0.1) {
+      videoRef.current.currentTime = currentTime;
+    }
+  }, [currentTime]);
+
   // Get current sentence based on time
   const getCurrentSentence = (): Sentence | null => {
     if (!processingData) return null;
