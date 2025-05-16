@@ -4,16 +4,18 @@ import { useVideoStore } from '../store/videoStore';
 const TimelinePreview: React.FC = () => {
   const { processingData, selectedSentences, setCurrentTime } = useVideoStore();
 
+  if (!processingData || selectedSentences.size === 0) return null;
+
   const handleSeek = (time: number) => {
     setCurrentTime(time);
     // Optionally, you could trigger a ref or event to sync the video player
   };
 
   return (
-    <div className="p-4 bg-white rounded shadow">
+    <div className="mt-4 p-4 bg-white rounded shadow">
       <h3 className="text-lg font-medium mb-2">Timeline</h3>
       <div className="space-y-2">
-        {processingData?.sections.map((section) => (
+        {processingData.sections.map((section) => (
           <div key={section.title} className="space-y-1">
             <h4 className="text-sm font-medium text-gray-600">{section.title}</h4>
             <div className="flex flex-wrap gap-2">
