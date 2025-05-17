@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useVideoStore } from '../store/videoStore';
 
 const TimelineBar: React.FC = () => {
-  const { processingData, selectedSentences, currentTime } = useVideoStore();
+  const { processingData, selectedSentences, currentTime, setCurrentTime } = useVideoStore();
+  const timelineBarRef = useRef<HTMLDivElement>(null);
 
   // Get video duration
   const duration = useMemo(() => {
@@ -32,10 +33,27 @@ const TimelineBar: React.FC = () => {
 
   if (!processingData || selectedSentences.size === 0) return null;
 
+  // Click-to-seek handler
+  const handleBarClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!duration || !timelineBarRef.current) return;
+    const rect = timelineBarRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percent = Math.min(Math.max(x / rect.width, 0), 1);
+    let seekTime = percent * duration;
+    // If seeking to a selected highlight and at/after the end, snap to just before the end
+    const inHighlight = segments.find(seg => seekTime >= seg.start && seekTime < seg.end);
+    if (inHighlight && seekTime >= inHighlight.end - 0.05) {
+      seekTime = inHighlight.end - 0.1;
+    }
+    setCurrentTime(seekTime);
+  };
+
   return (
     <div
-      className="relative w-full h-6 mt-4 mb-2 bg-gray-300 rounded overflow-hidden"
-      title="Timeline"
+      ref={timelineBarRef}
+      className="relative w-full h-6 mt-4 mb-2 bg-gray-300 rounded overflow-hidden cursor-pointer"
+      onClick={handleBarClick}
+      title="Click to seek"
     >
       {/* Highlight Segments */}
       {segments.map((seg, i) => {
