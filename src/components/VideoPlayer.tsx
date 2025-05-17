@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useVideoStore } from '../store/videoStore';
 import type { Sentence } from '../models/video';
 
@@ -61,6 +61,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoRef }) => {
         if (next) {
           video.currentTime = next.start;
         } else {
+          // Snap to end of last highlight and pause
+          const last = highlights[highlights.length - 1];
+          if (last) {
+            video.currentTime = last.end;
+          }
           video.pause();
         }
       } else {
@@ -71,6 +76,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoRef }) => {
           if (next) {
             video.currentTime = next.start;
           } else {
+            video.currentTime = current.end;
             video.pause();
           }
         }

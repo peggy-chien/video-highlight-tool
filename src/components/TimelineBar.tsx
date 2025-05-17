@@ -33,7 +33,10 @@ const TimelineBar: React.FC = () => {
   if (!processingData || selectedSentences.size === 0) return null;
 
   return (
-    <div className="relative w-full h-6 mt-4 mb-2 bg-gray-300 rounded overflow-hidden">
+    <div
+      className="relative w-full h-6 mt-4 mb-2 bg-gray-300 rounded overflow-hidden"
+      title="Timeline"
+    >
       {/* Highlight Segments */}
       {segments.map((seg, i) => {
         const left = duration ? `${(seg.start / duration) * 100}%` : '0%';
