@@ -52,6 +52,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoRef }) => {
     if (!highlights.length) return;
 
     const onTimeUpdate = () => {
+      // Only run highlight-skipping logic if video is playing
+      if (video.paused) return;
       const t = video.currentTime;
       // Find the current highlight
       const current = highlights.find(seg => t >= seg.start && t < seg.end);

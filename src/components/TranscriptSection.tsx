@@ -29,6 +29,21 @@ const TranscriptSection: React.FC = () => {
 
   if (!processingData) return null;
 
+  // Helper to check if a sentence is selected
+  const isSentenceSelected = (id: string) => selectedSentences.has(id);
+
+  // Helper to pause video
+  const pauseVideo = () => {
+    const video = document.querySelector('video');
+    if (video) video.pause();
+  };
+
+  // Helper to check if video is playing
+  const isVideoPlaying = () => {
+    const video = document.querySelector('video');
+    return video && !video.paused;
+  };
+
   return (
     <div className="space-y-6">
       {processingData.sections.map((section) => (
@@ -58,6 +73,9 @@ const TranscriptSection: React.FC = () => {
                     onClick={e => {
                       e.stopPropagation();
                       setCurrentTime(sentence.startTime);
+                      if (!isSentenceSelected(sentence.id) && isVideoPlaying()) {
+                        pauseVideo();
+                      }
                     }}
                   >
                     {sentence.startTime.toFixed(1)}s

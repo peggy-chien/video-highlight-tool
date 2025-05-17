@@ -42,7 +42,13 @@ const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> =
   // Play/pause logic
   const handlePlayPause = () => {
     if (!videoRef.current) return;
+    // If paused on a non-selected sentence, jump to the next selected highlight
+    const inHighlight = highlights.some(seg => currentTime >= seg.start && currentTime < seg.end);
     if (videoRef.current.paused) {
+      if (!inHighlight) {
+        const next = highlights.find(seg => seg.start > currentTime) || highlights[0];
+        if (next) setCurrentTime(next.start);
+      }
       videoRef.current.play();
       setIsPlaying(true);
     } else {
