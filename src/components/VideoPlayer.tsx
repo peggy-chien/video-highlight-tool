@@ -53,7 +53,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoRef }) => {
       {/* Transcript Overlay */}
       <div 
         className={`absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-50 text-white transition-opacity duration-300`}
-        style={{ opacity: overlayText ? 1 : 0 }}
+        style={{ opacity: overlayText ? 0.75 : 0 }}
       >
         <p className="text-lg">{overlayText}</p>
       </div>

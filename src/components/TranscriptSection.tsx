@@ -30,11 +30,14 @@ const TranscriptSection: React.FC = () => {
 
   // Debounced auto-scroll to the current sentence (to prevent excessive scroll events during rapid playback)
   useEffect(() => {
-    if (currentSentenceRef.current) {
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        currentSentenceRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 80); // 80ms debounce
+    // Only auto-scroll on md: screens and up
+    if (window.matchMedia && window.matchMedia('(min-width: 768px)').matches) {
+      if (currentSentenceRef.current) {
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          currentSentenceRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 80); // 80ms debounce
+      }
     }
     return () => {
       if (scrollTimeout) clearTimeout(scrollTimeout);
