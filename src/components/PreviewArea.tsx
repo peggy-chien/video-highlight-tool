@@ -12,7 +12,7 @@ const PreviewArea: React.FC = () => {
       <h2 className="text-xl font-semibold mb-4">Preview Area</h2>
       <VideoPlayer videoRef={videoRef} />
       <VideoControls videoRef={videoRef} />
-      <TimelineBar />
+      <TimelineBar videoRef={videoRef} />
     </div>
   );
 };

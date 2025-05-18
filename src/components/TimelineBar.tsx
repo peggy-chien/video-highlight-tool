@@ -1,27 +1,20 @@
-import React, { useMemo, useRef } from 'react';
-import { useVideoStore } from '../store/videoStore';
-import { getHighlightSegments } from '../store/videoSelectors';
+import React, { useRef } from 'react';
+import { useVideoHighlights } from '../hooks/useVideoHighlights';
 
-const TimelineBar: React.FC = () => {
-  const { processingData, selectedSentences, currentTime, setCurrentTime } = useVideoStore();
+interface TimelineBarProps {
+  videoRef: React.RefObject<HTMLVideoElement>;
+}
+
+const TimelineBar: React.FC<TimelineBarProps> = ({ videoRef }) => {
   const timelineBarRef = useRef<HTMLDivElement>(null);
+  const { 
+    currentTime, 
+    duration, 
+    highlights, 
+    handleSeek 
+  } = useVideoHighlights({ videoRef });
 
-  // Get video duration
-  const duration = useMemo(() => {
-    if (!processingData) return 0;
-    let max = 0;
-    processingData.sections.forEach(section => {
-      section.sentences.forEach(sentence => {
-        if (sentence.endTime > max) max = sentence.endTime;
-      });
-    });
-    return max;
-  }, [processingData]);
-
-  // Get highlight segments (centralized)
-  const segments = useMemo(() => getHighlightSegments(processingData, selectedSentences), [processingData, selectedSentences]);
-
-  if (!processingData || selectedSentences.size === 0) return null;
+  if (!duration || highlights.length === 0) return null;
 
   // Click-to-seek handler
   const handleBarClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -29,13 +22,8 @@ const TimelineBar: React.FC = () => {
     const rect = timelineBarRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const percent = Math.min(Math.max(x / rect.width, 0), 1);
-    let seekTime = percent * duration;
-    // If seeking to a selected highlight and at/after the end, snap to just before the end
-    const inHighlight = segments.find(seg => seekTime >= seg.start && seekTime < seg.end);
-    if (inHighlight && seekTime >= inHighlight.end - 0.05) {
-      seekTime = inHighlight.end - 0.1;
-    }
-    setCurrentTime(seekTime);
+    const seekTime = percent * duration;
+    handleSeek(seekTime);
   };
 
   return (
@@ -46,7 +34,7 @@ const TimelineBar: React.FC = () => {
       title="Click to seek"
     >
       {/* Highlight Segments */}
-      {segments.map((seg, i) => {
+      {highlights.map((seg, i) => {
         const left = duration ? `${(seg.start / duration) * 100}%` : '0%';
         const width = duration ? `${((seg.end - seg.start) / duration) * 100}%` : '0%';
         return (

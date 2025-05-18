@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useVideoStore } from '../store/videoStore';
-import type { Sentence } from '../models/video';
+import { useVideoHighlights } from '../hooks/useVideoHighlights';
 import { getHighlightSegments } from '../store/videoSelectors';
 
 interface VideoPlayerProps {
@@ -8,7 +8,8 @@ interface VideoPlayerProps {
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoRef }) => {
-  const { videoFile, processingData, selectedSentences, currentTime, setCurrentTime } = useVideoStore();
+  const { videoFile, processingData, selectedSentences } = useVideoStore();
+  const { currentTime, currentSentence, setCurrentTime } = useVideoHighlights({ videoRef });
 
   // Update video source when file changes
   useEffect(() => {
@@ -74,22 +75,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoRef }) => {
     video.addEventListener('timeupdate', onTimeUpdate);
     return () => video.removeEventListener('timeupdate', onTimeUpdate);
   }, [videoRef, processingData, selectedSentences]);
-
-  // Get current sentence based on time
-  const getCurrentSentence = (): Sentence | null => {
-    if (!processingData) return null;
-
-    for (const section of processingData.sections) {
-      for (const sentence of section.sentences) {
-        if (currentTime >= sentence.startTime && currentTime <= sentence.endTime) {
-          return sentence;
-        }
-      }
-    }
-    return null;
-  };
-
-  const currentSentence = getCurrentSentence();
 
   return (
     <div className="relative">

@@ -15,4 +15,9 @@ export interface VideoProcessingData {
   fullTranscript: string;
   sections: Section[];
   suggestedHighlights: string[];
+}
+
+export interface HighlightSegment {
+  start: number;
+  end: number;
 } 

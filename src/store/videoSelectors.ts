@@ -1,11 +1,11 @@
-import type { VideoProcessingData } from '../models/video';
+import type { VideoProcessingData, HighlightSegment } from '../models/video';
 
 export function getHighlightSegments(
   processingData: VideoProcessingData | null,
   selectedSentences: Set<string>
-) {
+): HighlightSegment[] {
   if (!processingData) return [];
-  const segs: { start: number; end: number }[] = [];
+  const segs: HighlightSegment[] = [];
   processingData.sections.forEach(section => {
     section.sentences.forEach(sentence => {
       if (selectedSentences.has(sentence.id)) {
