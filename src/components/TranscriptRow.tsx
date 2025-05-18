@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import type { Sentence } from '../models/video';
+import CheckBadge from '../assets/check-badge-fill-12.svg';
 
 interface TranscriptRowProps {
   sentence: Sentence;
@@ -38,9 +39,18 @@ const TranscriptRow: React.FC<TranscriptRowProps> = memo(({ sentence, isCurrent,
       </span>
       <p className="flex-1">{sentence.text}</p>
       {sentence.isSuggestedHighlight && (
-        <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">
-          Suggested
-        </span>
+        <>
+          <span className="block md:hidden flex-shrink-0">
+            <img
+              src={CheckBadge}
+              alt="Suggested"
+              className="w-5 h-5 [filter:invert(31%)_sepia(98%)_saturate(1234%)_hue-rotate(202deg)_brightness(97%)_contrast(101%)]"
+            />
+          </span>
+          <span className="hidden md:inline text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded flex-shrink-0 whitespace-nowrap">
+            Suggested
+          </span>
+        </>
       )}
     </div>
   );
