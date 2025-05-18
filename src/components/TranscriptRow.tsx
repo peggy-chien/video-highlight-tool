@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Sentence } from '../models/video';
 import CheckBadge from '../assets/check-badge-fill-12.svg';
 
@@ -12,6 +13,8 @@ interface TranscriptRowProps {
 }
 
 const TranscriptRow: React.FC<TranscriptRowProps> = memo(({ sentence, isCurrent, isSelected, onToggle, onTimeClick, currentSentenceRef }) => {
+  const { t } = useTranslation();
+
   return (
     <div
       key={sentence.id}
@@ -35,7 +38,7 @@ const TranscriptRow: React.FC<TranscriptRowProps> = memo(({ sentence, isCurrent,
           onTimeClick(sentence.startTime, sentence.id);
         }}
       >
-        {sentence.startTime.toFixed(1)}s
+        {t('transcript.timestamp', { time: sentence.startTime.toFixed(1) })}
       </span>
       <p className="flex-1">{sentence.text}</p>
       {sentence.isSuggestedHighlight && (
@@ -43,12 +46,12 @@ const TranscriptRow: React.FC<TranscriptRowProps> = memo(({ sentence, isCurrent,
           <span className="block md:hidden flex-shrink-0">
             <img
               src={CheckBadge}
-              alt="Suggested"
+              alt={t('common.suggested')}
               className="w-5 h-5 [filter:invert(31%)_sepia(98%)_saturate(1234%)_hue-rotate(202deg)_brightness(97%)_contrast(101%)]"
             />
           </span>
           <span className="hidden md:inline text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded flex-shrink-0 whitespace-nowrap">
-            Suggested
+            {t('common.suggested')}
           </span>
         </>
       )}

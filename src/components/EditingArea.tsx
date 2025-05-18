@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useVideoStore } from '../store/videoStore';
 import { processVideo } from '../services/videoService';
 import TranscriptSection from './TranscriptSection';
@@ -10,6 +11,7 @@ interface EditingAreaProps {
 }
 
 const EditingArea: React.FC<EditingAreaProps> = ({ videoRef }) => {
+  const { t } = useTranslation();
   const processingData = useVideoStore(state => state.processingData);
   const setVideoFile = useVideoStore(state => state.setVideoFile);
   const setProcessingData = useVideoStore(state => state.setProcessingData);
@@ -37,7 +39,7 @@ const EditingArea: React.FC<EditingAreaProps> = ({ videoRef }) => {
           });
         });
       } catch (error) {
-        setUploadError('Failed to process video. Please try again.');
+        setUploadError(t('transcript.editingArea.uploadError'));
         console.error('Error processing video:', error);
       }
     }
@@ -46,10 +48,10 @@ const EditingArea: React.FC<EditingAreaProps> = ({ videoRef }) => {
   return (
     <div className="flex flex-col h-full bg-gray-100 p-4 rounded">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Editing Area</h2>
+        <h2 className="text-xl font-semibold">{t('transcript.editingArea.title')}</h2>
         {processingData && (
           <span className="text-sm text-gray-600">
-            {selectedSentences.size} sentences selected
+            {t('transcript.editingArea.sentencesSelected', { count: selectedSentences.size })}
           </span>
         )}
       </div>
@@ -61,8 +63,8 @@ const EditingArea: React.FC<EditingAreaProps> = ({ videoRef }) => {
           disabled={isPlaying}
           onFileChange={handleFileUpload}
           accept="video/*"
-          mobileLabel={videoFile ? 'Change' : 'Upload'}
-          desktopLabel={videoFile ? 'Pick Another One' : 'Upload Video'}
+          mobileLabel={videoFile ? t('transcript.editingArea.changeVideo') : t('transcript.editingArea.uploadVideo')}
+          desktopLabel={videoFile ? t('transcript.editingArea.pickAnotherVideo') : t('transcript.editingArea.uploadVideo')}
         />
         {uploadError && (
           <span className="text-red-600 text-sm ml-2">{uploadError}</span>

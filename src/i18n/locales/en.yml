@@ -1,0 +1,24 @@
+common:
+  mobile: "Upload"
+  desktop: "Upload File"
+  suggested: "Suggested"
+  error: "Error: {{message}}"
+  networkError: "Network error. Please try again."
+  unsupportedFile: "Unsupported file type."
+
+transcript:
+  timestamp: "{{time}}s"
+  editingArea:
+    title: "Editing Area"
+    sentencesSelected: "{{count}} sentences selected"
+    changeVideo: "Change"
+    pickAnotherVideo: "Pick Another One"
+    uploadVideo: "Upload Video"
+    uploadError: "Failed to process video. Please try again."
+
+video:
+  controls:
+    play: "Play video"
+    pause: "Pause video"
+    next: "Go to next highlight"
+    previous: "Go to previous highlight"

@@ -8,7 +8,7 @@ interface VideoPlayerProps {
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoRef }) => {
   const { videoFile } = useVideoStore();
-  const { currentTime, currentSentence, setCurrentTime } = useVideoHighlights({ videoRef });
+  const { currentTime, currentSentence, setCurrentTime } = useVideoHighlights({ videoRef });  // custom hook, optimize internally
   const [overlayText, setOverlayText] = useState('');
 
   // Update video source when file changes

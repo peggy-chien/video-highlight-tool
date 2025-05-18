@@ -1,0 +1,24 @@
+common:
+  mobile: "上傳"
+  desktop: "上傳檔案"
+  suggested: "建議"
+  error: "錯誤：{{message}}"
+  networkError: "網路錯誤，請重試。"
+  unsupportedFile: "不支援的檔案類型。"
+
+transcript:
+  timestamp: "{{time}}秒"
+  editingArea:
+    title: "編輯區域"
+    sentencesSelected: "已選擇 {{count}} 個段落"
+    changeVideo: "更換"
+    pickAnotherVideo: "選擇其他影片"
+    uploadVideo: "上傳影片"
+    uploadError: "影片上傳失敗，請重試。"
+
+video:
+  controls:
+    play: "播放影片"
+    pause: "暫停影片"
+    next: "前往下一個段落"
+    previous: "前往上一個段落"

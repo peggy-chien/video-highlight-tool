@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useVideoHighlights } from '../hooks/useVideoHighlights';
 
 const formatTime = (seconds: number) => {
@@ -12,6 +13,7 @@ const formatTime = (seconds: number) => {
 };
 
 const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> = ({ videoRef }) => {
+  const { t } = useTranslation();
   const { 
     currentTime, 
     isPlaying, 
@@ -29,7 +31,7 @@ const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> =
         <button 
           onClick={handlePrevHighlight} 
           className="px-2 py-1 rounded hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed" 
-          title="Previous Highlight"
+          title={t('video.controls.previous')}
           disabled={isLoading}
         >
           &#124;&lt;
@@ -37,7 +39,7 @@ const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> =
         <button 
           onClick={handlePlayPause} 
           className="px-3 py-1 rounded hover:bg-gray-700 text-lg disabled:opacity-50 disabled:cursor-not-allowed" 
-          title="Play/Pause"
+          title={isPlaying ? t('video.controls.pause') : t('video.controls.play')}
           disabled={isLoading}
         >
           {isLoading ? '⌛' : isPlaying ? '⏸' : '▶'}
@@ -45,7 +47,7 @@ const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> =
         <button 
           onClick={handleNextHighlight} 
           className="px-2 py-1 rounded hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed" 
-          title="Next Highlight"
+          title={t('video.controls.next')}
           disabled={isLoading}
         >
           &gt;&#124;
@@ -56,7 +58,7 @@ const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> =
       </div>
       {error && (
         <div className="text-red-500 text-sm bg-red-100 p-2 rounded">
-          Error: {error.message}
+          {t('common.error', { message: error.message })}
         </div>
       )}
     </div>
