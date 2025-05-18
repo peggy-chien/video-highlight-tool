@@ -16,25 +16,49 @@ const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> =
     currentTime, 
     isPlaying, 
     duration, 
+    isLoading,
+    error,
     handlePlayPause, 
     handlePrevHighlight, 
     handleNextHighlight 
   } = useVideoHighlights({ videoRef });
 
   return (
-    <div className="flex items-center justify-between w-full gap-2 px-2 py-2 bg-gray-800 rounded text-white mt-4">
-      <button onClick={handlePrevHighlight} className="px-2 py-1 rounded hover:bg-gray-700" title="Previous Highlight">
-        &#124;&lt;
-      </button>
-      <button onClick={handlePlayPause} className="px-3 py-1 rounded hover:bg-gray-700 text-lg" title="Play/Pause">
-        {isPlaying ? '⏸' : '▶'}
-      </button>
-      <button onClick={handleNextHighlight} className="px-2 py-1 rounded hover:bg-gray-700" title="Next Highlight">
-        &gt;&#124;
-      </button>
-      <span className="ml-2 text-sm font-mono">
-        {formatTime(currentTime)} / {formatTime(duration)}
-      </span>
+    <div className="flex flex-col gap-2 mt-4">
+      <div className="flex items-center justify-between w-full gap-2 px-2 py-2 bg-gray-800 rounded text-white">
+        <button 
+          onClick={handlePrevHighlight} 
+          className="px-2 py-1 rounded hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed" 
+          title="Previous Highlight"
+          disabled={isLoading}
+        >
+          &#124;&lt;
+        </button>
+        <button 
+          onClick={handlePlayPause} 
+          className="px-3 py-1 rounded hover:bg-gray-700 text-lg disabled:opacity-50 disabled:cursor-not-allowed" 
+          title="Play/Pause"
+          disabled={isLoading}
+        >
+          {isLoading ? '⌛' : isPlaying ? '⏸' : '▶'}
+        </button>
+        <button 
+          onClick={handleNextHighlight} 
+          className="px-2 py-1 rounded hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed" 
+          title="Next Highlight"
+          disabled={isLoading}
+        >
+          &gt;&#124;
+        </button>
+        <span className="ml-2 text-sm font-mono">
+          {formatTime(currentTime)} / {formatTime(duration)}
+        </span>
+      </div>
+      {error && (
+        <div className="text-red-500 text-sm bg-red-100 p-2 rounded">
+          Error: {error.message}
+        </div>
+      )}
     </div>
   );
 };
