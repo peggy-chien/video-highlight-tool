@@ -19,6 +19,9 @@ COPY package*.json ./
 # to avoid this, change the ownership of the files to the root user
 USER root
 
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@10.10.0 --activate
+
 # change the ownership of the /app directory to the app user
 # chown -R <user>:<group> <directory>
 # chown command changes the user and/or group ownership of for given file.

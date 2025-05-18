@@ -3,6 +3,8 @@
 # Variables
 DEV_IMAGE=video-highlight-tool-dev
 PROD_IMAGE=video-highlight-tool
+DEV_CONTAINER=video-highlight-tool-dev-container
+PROD_CONTAINER=video-highlight-tool-container
 
 # Build dev image
 build-dev:
@@ -10,11 +12,11 @@ build-dev:
 
 # Run dev container
 run-dev:
-	docker run -p 5173:5173 $(DEV_IMAGE)
+	docker run --name $(DEV_CONTAINER) -p 5173:5173 $(DEV_IMAGE)
 
 # Run dev container with hot reload (mount source)
 run-dev-hot:
-	docker run -p 5173:5173 -v $(PWD):/app -v /app/node_modules $(DEV_IMAGE)
+	docker run --name $(DEV_CONTAINER) -p 5173:5173 -v $(PWD):/app -v /app/node_modules $(DEV_IMAGE)
 
 # Build prod image
 build-prod:
@@ -22,7 +24,7 @@ build-prod:
 
 # Run prod container
 run-prod:
-	docker run -p 8080:80 $(PROD_IMAGE)
+	docker run --name $(PROD_CONTAINER) -p 8080:80 $(PROD_IMAGE)
 
 # Clean up all containers and images (use with caution)
 clean:
