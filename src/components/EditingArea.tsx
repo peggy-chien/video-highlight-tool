@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useVideoStore } from '../store/videoStore';
 import { processVideo } from '../services/videoService';
 import TranscriptSection from './TranscriptSection';
@@ -17,8 +17,11 @@ const EditingArea: React.FC<EditingAreaProps> = ({ videoRef }) => {
   const toggleSentenceSelection = useVideoStore(state => state.toggleSentenceSelection);
   const videoFile = useVideoStore(state => state.videoFile);
   const { isPlaying } = useVideoHighlights({ videoRef });
+  const [uploadError, setUploadError] = React.useState<string | null>(null);
 
-  const handleFileUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+  // No need for useCallback since this is not passed to deeply memoized children
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUploadError(null);
     const file = event.target.files?.[0];
     if (file) {
       setVideoFile(file);
@@ -34,10 +37,11 @@ const EditingArea: React.FC<EditingAreaProps> = ({ videoRef }) => {
           });
         });
       } catch (error) {
+        setUploadError('Failed to process video. Please try again.');
         console.error('Error processing video:', error);
       }
     }
-  }, [setVideoFile, setProcessingData, selectedSentences, toggleSentenceSelection]);
+  };
 
   return (
     <div className="flex flex-col h-full bg-gray-100 p-4 rounded">
@@ -60,6 +64,9 @@ const EditingArea: React.FC<EditingAreaProps> = ({ videoRef }) => {
           mobileLabel={videoFile ? 'Change' : 'Upload'}
           desktopLabel={videoFile ? 'Pick Another One' : 'Upload Video'}
         />
+        {uploadError && (
+          <span className="text-red-600 text-sm ml-2">{uploadError}</span>
+        )}
       </div>
 
       {/* Scrollable Transcript Sections */}

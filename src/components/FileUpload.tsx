@@ -5,7 +5,7 @@ interface FileUploadProps {
   accept?: string;
   disabled?: boolean;
   onFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  file?: File | null;
+  file: File | null;
   mobileLabel?: string;
   desktopLabel?: string;
 }
@@ -23,22 +23,12 @@ const FileUpload: React.FC<FileUploadProps> = memo(({
     <label
       htmlFor="file-upload"
       className={`px-3 py-1.5 bg-blue-600 text-white rounded shadow transition-colors font-medium inline-block text-sm ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-blue-700'}`}
+      aria-disabled={disabled}
     >
       {label && <span className="sr-only">{label}</span>}
-      {/* Responsive button text */}
-      {file ? (
-        <>
-          <span className="block md:hidden">{mobileLabel}</span>
-          <span className="hidden md:block">{desktopLabel}</span>
-        </>
-      ) : (
-        <>
-          <span className="block md:hidden">{mobileLabel}</span>
-          <span className="hidden md:block">{desktopLabel}</span>
-        </>
-      )}
+      <span className="block md:hidden">{mobileLabel}</span>
+      <span className="hidden md:block">{desktopLabel}</span>
       <input
-        key="file-upload"
         id="file-upload"
         type="file"
         accept={accept}
