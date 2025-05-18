@@ -8,6 +8,12 @@ A modern, performant web tool for creating and previewing video highlights with 
 
 ---
 
+## 🚀 Live Demo
+
+[https://video-highlight-tool-beta.vercel.app/](https://video-highlight-tool-beta.vercel.app/)
+
+---
+
 ## ⚡ Quick Start
 
 ```sh
