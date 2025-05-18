@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 import { useVideoStore } from '../store/videoStore';
 import { processVideo } from '../services/videoService';
 import TranscriptSection from './TranscriptSection';
@@ -8,10 +8,49 @@ interface EditingAreaProps {
   videoRef: React.RefObject<HTMLVideoElement>;
 }
 
+const UploadInput = memo(({ videoFile, isPlaying, onFileChange }: {
+  videoFile: File | null;
+  isPlaying: boolean;
+  onFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}) => (
+  <label
+    htmlFor="video-upload"
+    className={`px-3 py-1.5 bg-blue-600 text-white rounded shadow transition-colors font-medium inline-block text-sm ${isPlaying ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-blue-700'}`}
+  >
+    {/* Responsive button text */}
+    {videoFile ? (
+      <>
+        <span className="block md:hidden">Change</span>
+        <span className="hidden md:block">Pick Another One</span>
+      </>
+    ) : (
+      <>
+        <span className="block md:hidden">Upload</span>
+        <span className="hidden md:block">Upload Video</span>
+      </>
+    )}
+    <input
+      key="video-upload"
+      id="video-upload"
+      type="file"
+      accept="video/*"
+      onChange={onFileChange}
+      className="hidden"
+      disabled={isPlaying}
+    />
+  </label>
+));
+
 const EditingArea: React.FC<EditingAreaProps> = ({ videoRef }) => {
-  const { processingData, setVideoFile, setProcessingData, selectedSentences, toggleSentenceSelection, videoFile } = useVideoStore();
+  const processingData = useVideoStore(state => state.processingData);
+  const setVideoFile = useVideoStore(state => state.setVideoFile);
+  const setProcessingData = useVideoStore(state => state.setProcessingData);
+  const selectedSentences = useVideoStore(state => state.selectedSentences);
+  const toggleSentenceSelection = useVideoStore(state => state.toggleSentenceSelection);
+  const videoFile = useVideoStore(state => state.videoFile);
   const { isPlaying } = useVideoHighlights({ videoRef });
 
+  // Memoize with minimal dependencies
   const handleFileUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -46,31 +85,7 @@ const EditingArea: React.FC<EditingAreaProps> = ({ videoRef }) => {
 
       {/* Video Upload */}
       <div className="mb-6 flex items-center gap-4">
-        <label
-          htmlFor="video-upload"
-          className={`px-3 py-1.5 bg-blue-600 text-white rounded shadow transition-colors font-medium inline-block text-sm ${isPlaying ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-blue-700'}`}
-        >
-          {/* Responsive button text */}
-          {videoFile ? (
-            <>
-              <span className="block md:hidden">Change</span>
-              <span className="hidden md:block">Pick Another One</span>
-            </>
-          ) : (
-            <>
-              <span className="block md:hidden">Upload</span>
-              <span className="hidden md:block">Upload Video</span>
-            </>
-          )}
-          <input
-            id="video-upload"
-            type="file"
-            accept="video/*"
-            onChange={handleFileUpload}
-            className="hidden"
-            disabled={isPlaying}
-          />
-        </label>
+        <UploadInput videoFile={videoFile} isPlaying={isPlaying} onFileChange={handleFileUpload} />
         {videoFile && (
           <span className={`text-gray-700 truncate max-w-xs ${isPlaying ? 'opacity-50' : ''}`}>{videoFile.name}</span>
         )}
