@@ -1,5 +1,6 @@
 import React, { useMemo, useRef } from 'react';
 import { useVideoStore } from '../store/videoStore';
+import { getHighlightSegments } from '../store/videoSelectors';
 
 const TimelineBar: React.FC = () => {
   const { processingData, selectedSentences, currentTime, setCurrentTime } = useVideoStore();
@@ -17,19 +18,8 @@ const TimelineBar: React.FC = () => {
     return max;
   }, [processingData]);
 
-  // Get highlight segments
-  const segments = useMemo(() => {
-    if (!processingData) return [];
-    const segs: { start: number; end: number }[] = [];
-    processingData.sections.forEach(section => {
-      section.sentences.forEach(sentence => {
-        if (selectedSentences.has(sentence.id)) {
-          segs.push({ start: sentence.startTime, end: sentence.endTime });
-        }
-      });
-    });
-    return segs;
-  }, [processingData, selectedSentences]);
+  // Get highlight segments (centralized)
+  const segments = useMemo(() => getHighlightSegments(processingData, selectedSentences), [processingData, selectedSentences]);
 
   if (!processingData || selectedSentences.size === 0) return null;
 

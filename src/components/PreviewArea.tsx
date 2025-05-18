@@ -5,7 +5,7 @@ import VideoControls from './VideoControls';
 
 const PreviewArea: React.FC = () => {
   // Create a ref to pass to both VideoPlayer and VideoControls
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null!);
 
   return (
     <div className="h-full bg-gray-100 p-4 rounded flex flex-col">

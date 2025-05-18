@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useVideoStore } from '../store/videoStore';
+import { getHighlightSegments } from '../store/videoSelectors';
 
 const formatTime = (seconds: number) => {
   const m = Math.floor(seconds / 60)
@@ -16,19 +17,8 @@ const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> =
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
 
-  // Get all selected highlight time ranges
-  const highlights = React.useMemo(() => {
-    if (!processingData) return [];
-    const segs: { start: number; end: number }[] = [];
-    processingData.sections.forEach(section => {
-      section.sentences.forEach(sentence => {
-        if (selectedSentences.has(sentence.id)) {
-          segs.push({ start: sentence.startTime, end: sentence.endTime });
-        }
-      });
-    });
-    return segs.sort((a, b) => a.start - b.start);
-  }, [processingData, selectedSentences]);
+  // Get all selected highlight time ranges (centralized)
+  const highlights = React.useMemo(() => getHighlightSegments(processingData, selectedSentences), [processingData, selectedSentences]);
 
   // Get video duration
   useEffect(() => {
