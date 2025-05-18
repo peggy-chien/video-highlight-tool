@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { useVideoHighlights } from '../hooks/useVideoHighlights';
+import TimelineSegment from './TimelineSegment';
 
 interface TimelineBarProps {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -38,10 +39,10 @@ const TimelineBar: React.FC<TimelineBarProps> = ({ videoRef }) => {
         const left = duration ? `${(seg.start / duration) * 100}%` : '0%';
         const width = duration ? `${((seg.end - seg.start) / duration) * 100}%` : '0%';
         return (
-          <div
+          <TimelineSegment
             key={i}
-            className="absolute top-0 h-full bg-blue-500 rounded"
-            style={{ left, width }}
+            left={left}
+            width={width}
           />
         );
       })}
