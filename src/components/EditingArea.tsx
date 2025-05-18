@@ -1,45 +1,13 @@
-import React, { useCallback, memo } from 'react';
+import React, { useCallback } from 'react';
 import { useVideoStore } from '../store/videoStore';
 import { processVideo } from '../services/videoService';
 import TranscriptSection from './TranscriptSection';
 import { useVideoHighlights } from '../hooks/useVideoHighlights';
+import FileUpload from './FileUpload';
 
 interface EditingAreaProps {
   videoRef: React.RefObject<HTMLVideoElement>;
 }
-
-const UploadInput = memo(({ videoFile, isPlaying, onFileChange }: {
-  videoFile: File | null;
-  isPlaying: boolean;
-  onFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}) => (
-  <label
-    htmlFor="video-upload"
-    className={`px-3 py-1.5 bg-blue-600 text-white rounded shadow transition-colors font-medium inline-block text-sm ${isPlaying ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-blue-700'}`}
-  >
-    {/* Responsive button text */}
-    {videoFile ? (
-      <>
-        <span className="block md:hidden">Change</span>
-        <span className="hidden md:block">Pick Another One</span>
-      </>
-    ) : (
-      <>
-        <span className="block md:hidden">Upload</span>
-        <span className="hidden md:block">Upload Video</span>
-      </>
-    )}
-    <input
-      key="video-upload"
-      id="video-upload"
-      type="file"
-      accept="video/*"
-      onChange={onFileChange}
-      className="hidden"
-      disabled={isPlaying}
-    />
-  </label>
-));
 
 const EditingArea: React.FC<EditingAreaProps> = ({ videoRef }) => {
   const processingData = useVideoStore(state => state.processingData);
@@ -50,7 +18,6 @@ const EditingArea: React.FC<EditingAreaProps> = ({ videoRef }) => {
   const videoFile = useVideoStore(state => state.videoFile);
   const { isPlaying } = useVideoHighlights({ videoRef });
 
-  // Memoize with minimal dependencies
   const handleFileUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -84,11 +51,15 @@ const EditingArea: React.FC<EditingAreaProps> = ({ videoRef }) => {
       </div>
 
       {/* Video Upload */}
-      <div className="mb-6 flex items-center gap-4">
-        <UploadInput videoFile={videoFile} isPlaying={isPlaying} onFileChange={handleFileUpload} />
-        {videoFile && (
-          <span className={`text-gray-700 truncate max-w-xs ${isPlaying ? 'opacity-50' : ''}`}>{videoFile.name}</span>
-        )}
+      <div className="mb-6 flex items-center gap-2">
+        <FileUpload
+          file={videoFile}
+          disabled={isPlaying}
+          onFileChange={handleFileUpload}
+          accept="video/*"
+          mobileLabel={videoFile ? 'Change' : 'Upload'}
+          desktopLabel={videoFile ? 'Pick Another One' : 'Upload Video'}
+        />
       </div>
 
       {/* Scrollable Transcript Sections */}
