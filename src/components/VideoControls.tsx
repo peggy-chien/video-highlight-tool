@@ -12,7 +12,12 @@ const formatTime = (seconds: number) => {
   return `${m}:${s}`;
 };
 
-const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> = ({ videoRef }) => {
+interface VideoControlsProps {
+  videoRef: React.RefObject<HTMLVideoElement>;
+  disabled?: boolean;
+}
+
+const VideoControls: React.FC<VideoControlsProps> = ({ videoRef, disabled = false }) => {
   const { t } = useTranslation();
   const { 
     currentTime, 
@@ -25,6 +30,8 @@ const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> =
     handleNextHighlight 
   } = useVideoHighlights({ videoRef });
 
+  const controlsDisabled = disabled || isLoading;
+
   return (
     <div className="flex flex-col gap-2 mt-4">
       <div className="flex items-center justify-between w-full gap-2 px-2 py-2 bg-gray-800 rounded text-white">
@@ -32,7 +39,7 @@ const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> =
           onClick={handlePrevHighlight} 
           className="px-2 py-1 rounded hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed" 
           title={t('video.controls.previous')}
-          disabled={isLoading}
+          disabled={controlsDisabled}
         >
           &#124;&lt;
         </button>
@@ -40,7 +47,7 @@ const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> =
           onClick={handlePlayPause} 
           className="px-3 py-1 rounded hover:bg-gray-700 text-lg disabled:opacity-50 disabled:cursor-not-allowed" 
           title={isPlaying ? t('video.controls.pause') : t('video.controls.play')}
-          disabled={isLoading}
+          disabled={controlsDisabled}
         >
           {isLoading ? '⌛' : isPlaying ? '⏸' : '▶'}
         </button>
@@ -48,7 +55,7 @@ const VideoControls: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> =
           onClick={handleNextHighlight} 
           className="px-2 py-1 rounded hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed" 
           title={t('video.controls.next')}
-          disabled={isLoading}
+          disabled={controlsDisabled}
         >
           &gt;&#124;
         </button>

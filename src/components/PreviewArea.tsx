@@ -3,6 +3,7 @@ import VideoPlayer from './VideoPlayer';
 import TimelineBar from './TimelineBar';
 import VideoControls from './VideoControls';
 import { useVideoHighlights } from '../hooks/useVideoHighlights';
+import { useVideoStore } from '../store/videoStore';
 
 interface PreviewAreaProps {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -10,6 +11,7 @@ interface PreviewAreaProps {
 
 const PreviewArea: React.FC<PreviewAreaProps> = ({ videoRef }) => {
   const { handlePlayPause, handlePrevHighlight, handleNextHighlight } = useVideoHighlights({ videoRef });
+  const videoFile = useVideoStore(state => state.videoFile);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -33,7 +35,7 @@ const PreviewArea: React.FC<PreviewAreaProps> = ({ videoRef }) => {
     <div className="h-full bg-gray-100 p-4 rounded flex flex-col">
       <h2 className="text-xl font-semibold mb-4">Preview Area</h2>
       <VideoPlayer videoRef={videoRef} />
-      <VideoControls videoRef={videoRef} />
+      <VideoControls videoRef={videoRef} disabled={!videoFile} />
       <TimelineBar videoRef={videoRef} />
     </div>
   );
