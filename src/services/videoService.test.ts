@@ -1,4 +1,3 @@
-import { it, expect, describe, vi, beforeEach } from 'vitest';
 import axios from 'axios';
 
 // Mock import.meta before importing videoService

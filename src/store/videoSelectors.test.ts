@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest';
 import { getHighlightSegments } from './videoSelectors';
 import type { VideoProcessingData } from '../models/video';
 

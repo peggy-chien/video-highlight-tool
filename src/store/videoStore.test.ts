@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach } from 'vitest';
 import { useVideoStore } from './videoStore';
 import type { VideoProcessingData } from '../models/video';
 
